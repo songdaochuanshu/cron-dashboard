@@ -2,118 +2,67 @@
 
 一个漂亮的定时任务管理平台，用于可视化管理 OpenClaw 定时任务。
 
-## 功能特性
-
-- 📊 **仪表盘** - 任务概览和统计信息
-- 📋 **任务列表** - 查看和管理所有定时任务
-- 📊 **任务详情** - 查看任务详细信息和执行历史
-- 📈 **统计分析** - 图表展示任务执行情况
-- 🔄 **实时状态** - 实时显示任务运行状态
-- ⚡ **手动触发** - 支持手动触发任务执行
-
 ## 技术栈
 
 ### 前端
-- Vue 3 + TypeScript
+- React 18 + TypeScript
 - Vite 构建工具
-- Pinia 状态管理
-- Vue Router 路由
-- ECharts 图表
-- Tailwind CSS 样式
+- React Router 路由
+- Recharts 图表
+- Axios HTTP 客户端
 
 ### 后端
-- Node.js + Express
+- Cloudflare Workers
 - TypeScript
-- better-sqlite3 数据库
-- OpenClaw Cron API 集成
 
-## 快速开始
+## 部署
 
-### 安装依赖
+### 前端（Cloudflare Pages）
 
-```bash
-# 后端
-cd backend
-npm install
+1. 连接 GitHub 仓库 `songdaochuanshu/cron-dashboard`
+2. 构建设置：
+   - **构建命令：** `cd frontend && npm install && npm run build`
+   - **输出目录：** `frontend/dist`
 
-# 前端
-cd frontend
-npm install
-```
+### 后端（Cloudflare Workers）
 
-### 启动开发服务器
+1. 安装 Wrangler CLI：
+   ```bash
+   npm install -g wrangler
+   ```
 
-```bash
-# 启动后端
-cd backend
-npm run dev
+2. 登录 Cloudflare：
+   ```bash
+   wrangler login
+   ```
 
-# 启动前端
-cd frontend
-npm run dev
-```
+3. 配置环境变量（wrangler.toml）：
+   ```toml
+   [vars]
+   OPENCLAW_GATEWAY_URL = "http://your-server-ip:18789"
+   OPENCLAW_TOKEN = "your-openclaw-token"
+   ```
 
-访问 http://localhost:3000 查看应用
+4. 部署：
+   ```bash
+   cd workers
+   npm install
+   npm run deploy
+   ```
+
+## 功能
+
+- 📊 仪表盘 - 任务概览和统计
+- 📋 任务列表 - 查看/启用/禁用/触发任务
+- 📊 任务详情 - 执行历史和状态
+- 📈 统计分析 - 图表展示任务执行情况
 
 ## 项目结构
 
 ```
 cron-dashboard/
-├── frontend/              # Vue3 前端
-│   ├── src/
-│   │   ├── api/          # API 请求
-│   │   ├── components/   # 组件
-│   │   ├── router/       # 路由
-│   │   ├── stores/       # 状态管理
-│   │   ├── views/        # 页面
-│   │   └── types/        # TypeScript 类型
-│   └── package.json
-├── backend/               # Node.js 后端
-│   ├── src/
-│   │   ├── routes/       # 路由
-│   │   ├── services/     # 业务逻辑
-│   │   ├── models/       # 数据模型
-│   │   └── utils/        # 工具函数
-│   └── package.json
+├── frontend/          # React 前端
+├── workers/           # Cloudflare Workers 后端
+├── backend/           # Node.js 后端（备用）
 └── README.md
 ```
-
-## 功能说明
-
-### 仪表盘
-- 显示任务总数、启用数、成功率
-- 展示所有任务概览
-- 快速查看任务状态
-
-### 任务列表
-- 查看所有定时任务
-- 启用/禁用任务
-- 手动触发任务执行
-- 查看任务详情
-
-### 任务详情
-- 查看任务详细信息
-- 查看执行历史记录
-- 查看任务状态
-
-### 统计分析
-- 任务状态分布图表
-- 执行成功率统计
-- 最近执行记录
-
-## API 接口
-
-- `GET /api/cron/jobs` - 获取所有任务
-- `GET /api/cron/jobs/:id` - 获取任务详情
-- `PATCH /api/cron/jobs/:id/toggle` - 切换任务状态
-- `POST /api/cron/jobs/:id/trigger` - 触发任务执行
-- `GET /api/cron/stats` - 获取统计信息
-
-## 开发计划
-
-- [x] 基础项目框架
-- [ ] 完善任务管理功能
-- [ ] 添加任务编辑功能
-- [ ] 添加任务创建功能
-- [ ] WebSocket 实时更新
-- [ ] 告警通知功能
